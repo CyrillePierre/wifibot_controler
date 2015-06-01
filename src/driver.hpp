@@ -4,9 +4,6 @@
 #include <stdint.h>
 #include "connection.hpp"
 
-char const * const SERVER_ADDR = "192.168.0.112";
-char const * const SERVER_PORT = "15000";
-
 /**
  * Cette classe représente le driver du wifibot. Elle contient des méthodes
  * permettant de déplacer le wifibot ainsi que de traiter les messages du
@@ -28,7 +25,7 @@ private:
 
 public:
 	/** @brief Constructeur */
-	Driver();
+	Driver(char const *, char const * = "15000");
 
 	/** @brief Envoi de la commande au robot */
 	void sendCmd();

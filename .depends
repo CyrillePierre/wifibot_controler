@@ -1,4 +1,5 @@
 bin/driver.o: src/driver.cpp src/driver.hpp src/connection.hpp
 bin/cmdparser.o: src/cmdparser.cpp
 bin/connection.o: src/connection.cpp src/connection.hpp
-bin/main.o: src/main.cpp src/driver.hpp src/connection.hpp
+bin/main.o: src/main.cpp src/driver.hpp src/connection.hpp src/cmdparser.hpp
+bin/net/server.o: src/net/server.cpp src/net/server.hpp src/net/client.hpp

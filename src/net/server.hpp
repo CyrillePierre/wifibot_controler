@@ -16,6 +16,7 @@ namespace net
  *
  * Le serveur n'a pas besoin d'accepter plusieurs utilisateurs mais
  * ça pourra être modifié par la suite.
+ * @author Cyrille Pierre
  */
 struct Server
 {

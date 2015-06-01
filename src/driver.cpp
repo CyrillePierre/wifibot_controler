@@ -3,10 +3,14 @@
 #include <cstdio>
 #include "driver.hpp"
 
-Driver::Driver() 
+/**
+ * @param addr : l'adresse du wifibot
+ * @param port : le port de l'application de contrôle du robot
+ */
+Driver::Driver(char const * addr, char const * port) 
 	: _leftSpeed(0), 
 	  _rightSpeed(0),
-	  _con(SERVER_ADDR, SERVER_PORT)
+	  _con(addr, port)
 {
 }
 
