@@ -1,27 +1,31 @@
+# Activation/Désactivation du mode
+# de débuggage
+DEBUG   = yes
 
-# mettre "yes" pour activer le débuggage
-DEBUG		= no
+# Répertoire des fichiers
+SRC_DIR  = src
+OBJ_DIR	 = bin
 
-EXEC		= $(notdir $(shell pwd))
+# Divers
+MAKE	= make --no-print-directory
+DEPFILE	= .depends
+RM		= rm -rf
+SHELL	= bash
 
-CXX			= g++
-STANDARD	= -std=c++11
-CFLAGS		= -Wall -pedantic -Wextra 
-LDFLAGS		= -lSDL -lpthread
-
-OBJ_DIR     = obj
-DEPENDS		= .depends
-SRC			= $(wildcard *.cpp)
-OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
-SHELL		= bash
-
-.SUFFIXES: .cpp .hpp .o
+# Règle de compilation
+CXX     = g++-4.6
+VERSION = -std=c++0x
+CFLAGS  = -Wall -Wextra
+LDFLAGS = 
+EXEC	= $(notdir $(shell pwd))
 
 ifeq ($(DEBUG), yes)
-	CFLAGS += -g -pg -O0
+CFLAGS += -g -O0 #-pg
 else
-	CFLAGS += -O2
+CFLAGS += -O2
 endif
+
+CFLAGS += $(VERSION)
 
 ### MEMO ###
 #   $@  :   nom de la cible
@@ -30,32 +34,50 @@ endif
 #   $+  :   liste des dépendances sans doublons 
 #   $?  :   liste des dépendances plus récente que la cible
 
-all : target $(EXEC)
+.SUFFIXES: .cpp .hpp .o
+
+SUBDIRS = $(shell find $(SRC_DIR) -type d | grep -v '\.\w')
+OBJ_DIRS = $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SUBDIRS))
+
+SRC	= $(foreach sdir,$(SUBDIRS),$(wildcard $(sdir)/*.cpp))
+OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
+
+INCOPT = $(addprefix -I, $(SUBDIRS))
+
+vpath %.cpp $(SUBDIRS)
+
+define make-goal
+$1/%.o : %.cpp
+	@echo -e "\e[01;39mCompilation de $$<...\e[01;31m"
+	@if ! $(CXX) $(CFLAGS) $(INCOPT) -c $$< -o $$@; then \
+		echo -en "\E[00m"; false; fi
+endef
+
+
+.PHONY : all clean depends check_dirs
+
+all : check_dirs $(EXEC)
+
+# Création des commandes de compilation pour chaque répertoire
+$(foreach sdir,$(OBJ_DIRS),$(eval $(call make-goal,$(sdir))))
 
 $(EXEC) : $(OBJ)
-	@echo -e "\e[01;39mCompilation du programme $@..."
+	@echo -e "\e[01;39mCompilation du programme $(EXEC)..."
 	@echo -en "\e[01;31m"
-	@if ! $(CXX) $+ -o $@ $(LDFLAGS); then \
-		echo -en "\e[00;39m"; false; \
-	else \
-		echo -e "\e[01;32m\nCompilation terminée avec succes !"; \
-		echo -e "\e[00m"; fi
+	@if ! $(CXX) $+ -o $@ $(LDFLAGS) ; then echo -en "\e[00m" ; false ; fi
+	@echo -e "\e[01;32m\nCompilation terminée avec succes !";
+	@echo -e "\e[00m";
 
-$(OBJ_DIR)/%.o : %.cpp
-	@echo -e "\E[01;39mCompilation de $<...\E[00;39m"
-	@echo -en "\E[01;31m"
-	@if ! $(CXX) $(STANDARD) $(CFLAGS) -c $< -o $@; then \
-		echo -en "\E[00;39m"; false; fi
+check_dirs : $(OBJ_DIRS)
 
-target :
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIRS) :
+	@mkdir -p $@
 
-clean :
-	rm -rf $(EXEC) $(OBJ_DIR)
+clean : 
+	$(RM) $(OBJ_DIR) $(EXEC)
 
 dep : $(SRC)
-	$(CXX) $(STANDARD) -MM $+ | sed -e 's/\(.*\)/$(OBJ_DIR)\/\1/' > $(DEPENDS)
+	@$(CXX) $(VERSION) $(INCOPT) -MM $+ \
+		| sed -r 's|^(\S*:\s)($(SRC_DIR)/)(\S*/)?|$(OBJ_DIR)/\3\1\2\3|' > $(DEPFILE)
 
-.PHONY : clean
-
-sinclude $(DEPENDS)
+sinclude $(DEPFILE)

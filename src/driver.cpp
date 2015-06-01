@@ -17,9 +17,9 @@ Driver::Driver()
 void Driver::sendCmd()
 {
 	_buf[0]  = (_leftSpeed < 0 ? 0 : DIR_BIT);
-	_buf[0] |= abs(_leftSpeed) & SPEED_BITS;
+	_buf[0] |= std::abs(_leftSpeed) & SPEED_BITS;
 	_buf[1]  = (_rightSpeed < 0 ? 0 : DIR_BIT);
-	_buf[1] |= abs(_rightSpeed) & SPEED_BITS;
+	_buf[1] |= std::abs(_rightSpeed) & SPEED_BITS;
 
 	_con.write(_buf, 2);
 
@@ -30,7 +30,7 @@ void Driver::sendCmd()
  * Modification de la valeur des moteurs de gauche.
  * @param val : la nouvelle valeur à affecter.
  */
-void Driver::leftSpeed(int16_t val)
+void Driver::leftSpeed(int8_t val)
 {
 	if      (val >  SPEED_MAX) _leftSpeed =  SPEED_MAX;
 	else if (val < -SPEED_MAX) _leftSpeed = -SPEED_MAX;
@@ -41,7 +41,7 @@ void Driver::leftSpeed(int16_t val)
  * Modification de la valeur des moteurs de droite.
  * @param val : la nouvelle valeur à affecter.
  */
-void Driver::rightSpeed(int16_t val)
+void Driver::rightSpeed(int8_t val)
 {
 	if      (val >  SPEED_MAX) _rightSpeed =  SPEED_MAX;
 	else if (val < -SPEED_MAX) _rightSpeed = -SPEED_MAX;

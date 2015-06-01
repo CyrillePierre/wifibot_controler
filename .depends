@@ -1,5 +1,3 @@
-obj/controler.o: controler.cpp controler.hpp
-obj/gamepad.o: gamepad.cpp gamepad.hpp
-obj/driver.o: driver.cpp driver.hpp
-obj/connection.o: connection.cpp connection.hpp
-obj/main.o: main.cpp connection.hpp gamepad.hpp
+bin/driver.o: src/driver.cpp src/driver.hpp src/connection.hpp
+bin/connection.o: src/connection.cpp src/connection.hpp
+bin/main.o: src/main.cpp src/driver.hpp src/connection.hpp
