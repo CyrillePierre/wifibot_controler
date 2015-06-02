@@ -13,11 +13,12 @@
  */
 class CmdParser
 {
-	Driver const & _driver;
+	Driver &           _driver;
+	std::ostringstream _oss;
 
 public:
 	/** @param driver : le driver du robot qui recevra les commandes */
-	CmdParser(Driver const & driver) : _driver(driver) {}
+	CmdParser(Driver & driver) : _driver(driver) {}
 
 	/** @brief Exécution d'une commande pour le robot */
 	std::string && execute(std::string &&);
