@@ -8,7 +8,7 @@
  * le driver.
  * @param cmd : le buffer contenant le texte de la commande
  */
-std::string && CmdParser::execute(std::string && cmd)
+std::string CmdParser::execute(std::string && cmd)
 {
 	std::istringstream iss(std::forward<std::string>(cmd));
 	std::string first;
@@ -39,6 +39,6 @@ std::string && CmdParser::execute(std::string && cmd)
 	}
 	else throw BadCommand("Le premier mot clé de la commande est inconnu");
 
-	return std::forward<std::string>(_oss.str());
+	return _oss.str();
 }
 

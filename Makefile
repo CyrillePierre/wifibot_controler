@@ -16,7 +16,7 @@ SHELL	= bash
 CXX     = g++-4.6
 VERSION = -std=c++0x
 CFLAGS  = -Wall -Wextra
-LDFLAGS = 
+LDFLAGS = -lpthread
 EXEC	= $(notdir $(shell pwd))
 
 ifeq ($(DEBUG), yes)

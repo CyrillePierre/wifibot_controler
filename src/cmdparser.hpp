@@ -21,7 +21,7 @@ public:
 	CmdParser(Driver & driver) : _driver(driver) {}
 
 	/** @brief Exécution d'une commande pour le robot */
-	std::string && execute(std::string &&);
+	std::string execute(std::string &&);
 };
 
 
