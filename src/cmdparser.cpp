@@ -27,7 +27,9 @@ std::string CmdParser::execute(std::string && cmd)
 				_driver.leftSpeed(left);
 				_driver.rightSpeed(right);
 				_driver.sendCmd();
-				_oss << "done";
+				_oss << "Nouvelles vitesses : " 
+					 << static_cast<int>(_driver.leftSpeed()) << " " 
+					 << static_cast<int>(_driver.rightSpeed());
 			}
 			else throw BadCommand(
 				"Syntaxe : set speed <moteurGauche> <moteurDroit>");
@@ -35,7 +37,13 @@ std::string CmdParser::execute(std::string && cmd)
 		else throw BadCommand("Le deuxième mot clé est inconnu");
 	}
 	else if (first == "get") {
-		throw BadCommand("Commande non implémentée");
+		iss >> second;
+		if (second == "speed") {
+			_oss << "Vitesses : "
+				 << static_cast<int>(_driver.leftSpeed()) << " " 
+				 << static_cast<int>(_driver.rightSpeed());
+		}
+		else throw BadCommand("Le deuxième mot clé est inconnu");
 	}
 	else throw BadCommand("Le premier mot clé de la commande est inconnu");
 

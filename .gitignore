@@ -3,3 +3,4 @@ bin/*
 wfb_controler
 *.swp
 tags
+.depends

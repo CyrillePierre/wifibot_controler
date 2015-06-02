@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 		while (client.read(buf, BUFFER_SIZE)) {
 			try { result = parser.execute(buf) + "\n"; }
 			catch (BadCommand & e) {
-				result = (std::string) "ERR: " + e.what() + "\n";
+				result = std::string("ERR: ") + e.what() + "\n";
 			}
 			client.write(result.c_str(), result.size());
 		}
