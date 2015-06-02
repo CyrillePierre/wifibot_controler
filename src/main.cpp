@@ -1,4 +1,5 @@
 
+#include <cstdio>
 #include <iostream>
 #include <string>
 #include "driver.hpp"
@@ -9,14 +10,25 @@
 
 #define BUFFER_SIZE	128
 
-int main()
+int main(int argc, char **argv)
 {
-	char buf[BUFFER_SIZE];
-	Driver driver("localhost");
+	int port;
+
+	if (argc != 3 || !sscanf(argv[2], "%d", &port)) {
+		std::cerr << "Syntaxe :\n\n    \e[01m" << argv[0]
+		          << " <adresseRobot> <portRasPi>\e[00m\n\n"
+				  << "<adresseRobot> : adresse IP du robot "
+				  << "(ex: 192.168.0.112)\n"
+				  << "<portRasPi>    : port TCP d'accès à l'application "
+				  << "(ex: 1337)" << std::endl;
+		return 1;
+	}
+
+	Driver driver(argv[1]);
 	CmdParser parser(driver);
-	net::Server server(1337);
 
 	// Écoute des commandes envoyé par TCP
+	net::Server server(port);
 	server.connect();
 	server.asyncAcceptLoop([&parser] (net::Client const & client) {
 		char buf[BUFFER_SIZE];
@@ -32,6 +44,7 @@ int main()
 	});
 
 	// Écoute des commandes sur l'entrée standard
+	char buf[BUFFER_SIZE];
 	while (std::cin.getline(buf, BUFFER_SIZE)) {
 		try { std::cout << parser.execute(buf) << std::endl; }
 		catch (BadCommand & e) {
