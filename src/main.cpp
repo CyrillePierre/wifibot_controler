@@ -2,13 +2,17 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <thread>
+#include <sstream>
+
 #include "driver.hpp"
 #include "cmdparser.hpp"
 #include "server.hpp"
 
-#include <sstream>
 
-#define BUFFER_SIZE	128
+std::size_t const BUFFER_SIZE = 128;
+int const         CMD_PERIOD  = 50;		// en millisecondes
+
 
 int main(int argc, char **argv)
 {
@@ -43,6 +47,15 @@ int main(int argc, char **argv)
 		}
 	});
 
+	// Thread d'envoi des commandes au robot
+	bool isRunning = true;
+	std::thread thread([&driver, &isRunning] () {
+		while (isRunning) {
+			usleep(CMD_PERIOD * 1000);
+			driver.sendCmd();
+		}
+	});
+
 	// Écoute des commandes sur l'entrée standard
 	char buf[BUFFER_SIZE];
 	while (std::cin.getline(buf, BUFFER_SIZE)) {
@@ -56,6 +69,10 @@ int main(int argc, char **argv)
 	driver.leftSpeed(0);
 	driver.rightSpeed(0);
 	driver.sendCmd();
+
+	// On attend la fin du thread d'envoi des commandes
+	isRunning = false;
+	thread.join();
 
 	return 0;
 }

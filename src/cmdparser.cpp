@@ -26,7 +26,6 @@ std::string CmdParser::execute(std::string && cmd)
 			if (iss >> left && iss >> right) {
 				_driver.leftSpeed(left);
 				_driver.rightSpeed(right);
-				_driver.sendCmd();
 				_oss << "Nouvelles vitesses : " 
 					 << static_cast<int>(_driver.leftSpeed()) << " " 
 					 << static_cast<int>(_driver.rightSpeed());
