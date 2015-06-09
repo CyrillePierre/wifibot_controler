@@ -17,7 +17,7 @@ CXX     = g++-4.6
 VERSION = -std=c++0x
 CFLAGS  = -Wall -Wextra
 LDFLAGS = -lpthread
-EXEC	= $(notdir $(shell pwd))
+EXEC	= wifibot_controler
 
 ifeq ($(DEBUG), yes)
 CFLAGS += -g -O0 #-pg
