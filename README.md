@@ -40,7 +40,7 @@ projet sous la forme d'une archive, on ne récupère que les fichiers sans le sy
 de versionnage.
 
 Voici un lien qui permet de récupérer le projet au format zip :
-[wifibot_controler](https://git.cpierre.ovh/cyrille/wifibot_controler/repository/archive.zip?ref=master)
+[wifibot_controler](https://git.cpierre.ovh/cyrille/wifibot_controler/repository/archive.zip?ref=master).
 Il est également possible de télécharger le projet sous d'autres format en
 cliquant sur le triangle à droite du bouton **download zip** en haut à droite.
 
@@ -51,7 +51,7 @@ On peut ensuite passer à l'étape de compilation
 Lorsqu'il vient d'être téléchargé, le répertoire du projet ne contient pas
 encore d'exécutable. C'est pourquoi il est nécessaire de le compiler.
 
-La compilation nécessite cependant quelques prérequis. Le code a été optimiser
+La compilation nécessite cependant quelques prérequis. Le code a été optimisé
 pour être compiler sur **Raspberry Pi** avec le système d'exploitation **Raspbian**.
 Le projet doit donc être compilé dans un environnement Linux équipé de la
 commande `make` ainsi que le compilateur **g++-4.6** ou une version ultérieure
