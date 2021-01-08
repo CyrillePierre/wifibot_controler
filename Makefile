@@ -13,7 +13,7 @@ RM		= rm -rf
 SHELL	= bash
 
 # Règle de compilation
-CXX     = g++-4.6
+CXX     = g++
 VERSION = -std=c++0x
 CFLAGS  = -Wall -Wextra
 LDFLAGS = -lpthread
